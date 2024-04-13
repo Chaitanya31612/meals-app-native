@@ -10,16 +10,27 @@ import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
 import Subtitle from "../components/MealDetail/Subtitle";
 import List from "../components/MealDetail/List";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useMemo } from "react";
 import IconButton from "../components/IconButton";
+import { FavoritesContext } from "../store/context/favorites-context";
 
 const MealDetailScreen = ({ route, navigation }) => {
+  const favoriteMealContext = useContext(FavoritesContext);
   const { mealId } = route.params;
+
+  // const mealIsFavorite = favoriteMealContext.ids.includes(mealId);
+  const mealIsFavorite = useMemo(() => {
+    return favoriteMealContext.ids.includes(mealId);
+  }, [favoriteMealContext.ids, mealId]);
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
-  function headerButtonPressHandler() {
-    console.log("Header button pressed!");
+  function changeFavoriteStatusHandler() {
+    if (mealIsFavorite) {
+      favoriteMealContext.removeFavorite(mealId);
+    } else {
+      favoriteMealContext.addFavorite(mealId);
+    }
   }
 
   useLayoutEffect(() => {
@@ -27,14 +38,14 @@ const MealDetailScreen = ({ route, navigation }) => {
       headerRight: () => {
         return (
           <IconButton
-            icon="star"
+            icon={mealIsFavorite ? "star" : "star-outline"}
             color="white"
-            onPress={headerButtonPressHandler}
+            onPress={changeFavoriteStatusHandler}
           />
         );
       },
     });
-  });
+  }, [navigation, changeFavoriteStatusHandler]);
 
   return (
     <ScrollView style={{ marginBottom: 16 }}>
