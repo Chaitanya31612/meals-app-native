@@ -1,7 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CategoryScreens, MealsOverviewScreen } from "./screens";
+import {
+  CategoryScreens,
+  MealDetailScreen,
+  MealsOverviewScreen,
+} from "./screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -12,11 +16,11 @@ export default function App() {
         <Stack.Navigator
           screenOptions={{
             headerStyle: {
-              backgroundColor: "#020203",
+              backgroundColor: "#1d1b58",
             },
             headerTintColor: "white",
             contentStyle: {
-              backgroundColor: "#1e0848",
+              backgroundColor: "#d3d8ef",
             },
             headerTitleAlign: "center",
           }}
@@ -38,6 +42,7 @@ export default function App() {
             //   };
             // }}
           />
+          <Stack.Screen name="MealDetail" component={MealDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
