@@ -10,6 +10,7 @@ import {
   MealDetailScreen,
   MealsOverviewScreen,
 } from "./screens";
+import FavoritesContextProvider from "./store/context/favorites-context";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -60,7 +61,7 @@ function DrawerNavigator() {
 
 export default function App() {
   return (
-    <>
+    <FavoritesContextProvider>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -86,7 +87,7 @@ export default function App() {
           <Stack.Screen name="MealDetail" component={MealDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </>
+    </FavoritesContextProvider>
   );
 }
 
