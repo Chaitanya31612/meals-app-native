@@ -12,24 +12,46 @@ import Subtitle from "../components/MealDetail/Subtitle";
 import List from "../components/MealDetail/List";
 import { useContext, useLayoutEffect, useMemo } from "react";
 import IconButton from "../components/IconButton";
-import { FavoritesContext } from "../store/context/favorites-context";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../store/redux/favorites";
+// import { FavoritesContext } from "../store/context/favorites-context";
 
 const MealDetailScreen = ({ route, navigation }) => {
-  const favoriteMealContext = useContext(FavoritesContext);
+  // ******************** using context api here ********************
+  // const favoriteMealContext = useContext(FavoritesContext);
+
+  // ******************** using redux here ********************
+  const favoriteMealIds = useSelector((state) => state.favoriteMeals.ids);
+  const dispatch = useDispatch();
+
   const { mealId } = route.params;
 
+  // ******************** using context api here ********************
   // const mealIsFavorite = favoriteMealContext.ids.includes(mealId);
-  const mealIsFavorite = useMemo(() => {
-    return favoriteMealContext.ids.includes(mealId);
-  }, [favoriteMealContext.ids, mealId]);
+  // const mealIsFavorite = useMemo(() => {
+  //   return favoriteMealContext.ids.includes(mealId);
+  // }, [favoriteMealContext.ids, mealId]);
+
+  // ******************** using redux here ********************
+  // const mealIsFavorite = useMemo(() => {
+  //   return favoriteMealIds.includes(mealId);
+  // }, [favoriteMealIds, mealId]);
+
+  const mealIsFavorite = favoriteMealIds.includes(mealId);
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
   function changeFavoriteStatusHandler() {
     if (mealIsFavorite) {
-      favoriteMealContext.removeFavorite(mealId);
+      // ** REDUX **
+      dispatch(removeFavorite({ id: mealId }));
+      // ** CONTEXT API **
+      // favoriteMealContext.removeFavorite(mealId);
     } else {
-      favoriteMealContext.addFavorite(mealId);
+      // ** REDUX **
+      dispatch(addFavorite({ id: mealId }));
+      // ** CONTEXT API **
+      // favoriteMealContext.addFavorite(mealId);
     }
   }
 
